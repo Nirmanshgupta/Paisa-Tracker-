@@ -1,0 +1,20 @@
+# Local database and user data
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Node dependencies and logs
+node_modules/
+npm-debug.log*
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+node_modules/
+.env
+*.db
+*.sqlite
+*.sqlite3

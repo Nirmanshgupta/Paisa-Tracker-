@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paisa Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Paisa<span>Tracker</span></h1>
+    <div class="top-actions">
+      <button class="btn" id="exportBtn" type="button">Export CSV</button>
+      <button class="btn" id="themeBtn" type="button">Dark mode</button>
+      <button class="btn danger" id="clearBtn" type="button">Clear all</button>
+    </div>
+  </header>
+
+  <!-- Balance -->
+  <section class="hero" aria-label="Summary">
+    <div>
+      <div class="label" id="balLabel">Net balance</div>
+      <div class="big" id="balance">₹0</div>
+      <div class="pair">
+        <div class="in"><span class="label">Income</span><b id="inc">₹0</b></div>
+        <div class="out"><span class="label">Expenses</span><b id="exp">₹0</b></div>
+        <div><span class="label">Transactions</span><b id="cnt">0</b></div>
+      </div>
+    </div>
+    <div class="month-pick">
+      <label for="monthSel">Show period</label>
+      <select id="monthSel"></select>
+    </div>
+  </section>
+
+  <div class="grid">
+    <!-- Left: form + budget -->
+    <div class="stack">
+      <section class="card">
+        <h2 id="formTitle">Add transaction</h2>
+        <div class="seg" role="radiogroup" aria-label="Type">
+          <input type="radio" name="type" id="tExp" value="expense" checked><label for="tExp">Expense</label>
+          <input type="radio" name="type" id="tInc" value="income"><label for="tInc">Income</label>
+        </div>
+        <div class="field">
+          <label for="amount">Amount (₹)</label>
+          <input id="amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category"></select>
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" type="date">
+          </div>
+        </div>
+        <div class="field">
+          <label for="note">Note (optional)</label>
+          <input id="note" type="text" maxlength="80" placeholder="e.g. Lunch with friends">
+        </div>
+        <p class="err" id="formErr" role="alert"></p>
+        <div class="btns">
+          <button class="btn primary" id="saveBtn" type="button">Add transaction</button>
+          <button class="btn" id="cancelBtn" type="button" hidden>Cancel</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Monthly budget</h2>
+        <div class="budget-row">
+          <input id="budgetInput" type="number" min="0" step="1" inputmode="numeric" placeholder="Set budget in ₹" aria-label="Monthly budget in rupees" style="flex:1;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--field)">
+          <button class="btn" id="budgetBtn" type="button">Save</button>
+        </div>
+        <div class="bar"><i id="budgetBar" style="width:0%"></i></div>
+        <p class="note" id="budgetMsg">Set a budget to see how much you can still spend.</p>
+      </section>
+    </div>
+
+    <!-- Right: charts + list -->
+    <div class="stack">
+      <div class="charts">
+        <section class="card">
+          <h2>Where money goes</h2>
+          <div class="donut-box" id="donutBox"></div>
+        </section>
+        <section class="card">
+          <h2>Last 6 months</h2>
+          <div class="bars" id="bars"></div>
+          <div class="key"><span>Income</span><span class="e">Expenses</span></div>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>Transactions</h2>
+        <div class="filters">
+          <input class="search" id="search" type="search" placeholder="Search notes or categories" aria-label="Search">
+          <select id="fType" aria-label="Filter by type">
+            <option value="all">All types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expenses</option>
+          </select>
+          <select id="fCat" aria-label="Filter by category"></select>
+          <select id="fSort" aria-label="Sort" style="grid-column: span 2">
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+            <option value="high">Highest amount</option>
+            <option value="low">Lowest amount</option>
+          </select>
+        </div>
+        <p class="count" id="listCount"></p>
+        <ul class="list" id="list"></ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastUndo" type="button">Undo</button></div>
+
+<dialog id="csvDlg">
+  <h2 style="font-size:1.15rem;margin-bottom:6px">Export CSV</h2>
+  <p class="note" style="margin-bottom:10px">Copy this text and paste it into a file named <b>paisa.csv</b>, or into Excel / Google Sheets.</p>
+  <textarea id="csvText" readonly aria-label="CSV data"></textarea>
+  <div class="btns" style="margin-top:12px">
+    <button class="btn primary" id="csvCopy" type="button">Copy</button>
+    <button class="btn" id="csvClose" type="button">Close</button>
+  </div>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
